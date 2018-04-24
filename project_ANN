@@ -1,0 +1,44 @@
+# CS 513
+# Final Project
+# Using ANN to predict beer type based on brewing data. 
+# This part is the ANN prediction
+
+# First step is to clear the environment
+rm(list=ls())
+
+# Next we load our data
+# Note that our working directory has been set to our lproject folder where this file, and the data are located
+data <- read.csv(file = "E:/Stevens/513 KDD/Shanky/recipeData.csv", na.strings=c("N/A"))
+View(data)
+
+# Note that our KNN algorithm will not work with non-numeric values, so we can remove columns that we do not need 
+data$SugarScale <- NULL
+data$BrewMethod <- NULL
+data$PrimingMethod <- NULL
+data$PrimingAmount <- NULL
+
+# Its a LOT of data so we are simply going to remove any row with NA's
+data <- na.omit(data)
+# This cuts us from ~73000 observations to 7053 observations
+
+# Now we can separate the data into testing and training data
+# We still have a lot of data, so we will be using a 50/50 split (taking every other observation)
+every_other <- seq(1, nrow(data), by=2)
+test_data <- data[every_other,5:18]
+train_data <- data[-every_other,5:18]
+
+#library("caret")
+library("neuralnet")
+?neuralnet()
+
+all_vars <- colnames(data[5:18])
+pred_vars <- all_vars[!all_vars%in%"StyleID"]
+pred_vars <- paste(pred_vars, collapse = "+")
+form= as.formula(paste("StyleID~", pred_vars, collapse = "+"))
+
+#normalizing the test and train data
+scaled.test.data <- scale(test_data)
+scaled.train.data <- scale(train_data)
+
+net_bc21  <- neuralnet(formula = form, data=scaled.train.data, hidden=c(4,2), threshold=0.01)
+plot(net_bc21)
