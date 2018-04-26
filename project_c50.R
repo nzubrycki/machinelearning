@@ -1,7 +1,6 @@
 # CS 513
 # Final Project
-# Using RandomForest to predict beer type based on brewing data. 
-# This part is the ANN prediction
+# Using C5.0 to predict beer type based on brewing data. 
 
 # First step is to clear the environment
 rm(list=ls())
@@ -28,6 +27,7 @@ every_other <- seq(1, nrow(data), by=2)
 test_data <- data[every_other,]
 train_data <- data[-every_other,]
 
+#install.packages('c50')
 library('C50')
 
 # c50 classification
@@ -37,9 +37,10 @@ C50_class
 # general information about the tree
 summary(C50_class)
 dev.off()
-plot(C50_class)
+# plot took 45 minutes to run, do not try this at home
+#plot(C50_class)
 
-# check error rate
+# check error rate, coincides with the returned error rate of the c5.0 function call
 C50_predict<-predict( C50_class ,test_data , type="class" )
 table(actual=test_data[,4],C50=C50_predict)
 wrong<- (test_data[,4]!=C50_predict)

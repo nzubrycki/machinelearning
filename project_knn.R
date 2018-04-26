@@ -1,8 +1,7 @@
-# Nicholas Zubrycki
 # CS 513
 # Final Project
-# Using KNN and ANN to predict beer type based on brewing data. 
-# This part is the KNN prediction
+# Using KNN to predict beer type based on brewing data. 
+
 
 # First step is to clear the environment
 rm(list=ls())

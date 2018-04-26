@@ -1,7 +1,6 @@
 # CS 513
 # Final Project
-# Using RandomForest to predict beer type based on brewing data. 
-# This part is the ANN prediction
+# Using kmeans clustering to predict beer type based on brewing data. 
 
 # First step is to clear the environment
 rm(list=ls())
@@ -28,18 +27,10 @@ every_other <- seq(1, nrow(data), by=2)
 test_data <- data[every_other,]
 train_data <- data[-every_other,]
 
-
-
-dist<-dist(data[,-c(1,2,3,4,5,19)])
-hclust_results<-hclust(dist)
-hclust_2<-cutree(hclust_results,2)
-table(hclust_results,data[,4])
-
 ?kmeans
 
-kmeans_2<- kmeans(data[,-c(1,2,3,4,5,19)],2,nstart = 10)
-kmeans_2$cluster
-table(kmeans_2$cluster,data[,4])
+set.seed(456)
+kmeans<- kmeans(data[,-c(1,2,3,4,5,19)],5,nstart = 10)
+kmeans
 
-
-
+table(kmeans$cluster, data$Style)
