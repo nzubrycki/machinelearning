@@ -1,6 +1,6 @@
 # CS 513
 # Final Project
-# Using ANN to predict beer type based on brewing data. 
+# Using RandomForest to predict beer type based on brewing data. 
 # This part is the ANN prediction
 
 # First step is to clear the environment
@@ -28,32 +28,22 @@ every_other <- seq(1, nrow(data), by=2)
 test_data <- data[every_other,]
 train_data <- data[-every_other,]
 
-# install and load the neural network package
-#install.packages("neuralnet")
-library("neuralnet")
-#?neuralnet()
+# install and load packages
+install.packages('randomForest')
 
-#all_vars <- colnames(data[6:18])
-#pred_vars <- all_vars[!all_vars%in%"StyleID"]
-#pred_vars <- paste(pred_vars, collapse = "+")
-#form= as.formula(paste("StyleID~", pred_vars, collapse = "+"))
+library(randomForest)
+set.seed(456)
 
-#normalizing the test and train data
-#scaled.test.data <- scale(test_data)
-#scaled.train.data <- scale(train_data)
 
-# Run the neural net to predict the StyleID based on the other features
-net <- neuralnet(c(1:176)~Size.L.+OG+FG+ABV+IBU+Color+BoilSize+BoilTime+BoilGravity+Efficiency+MashThickness+PitchRate+PrimaryTemp, train_data, hidden = c(6, 4, 2), threshold = .01)
-plot(net)
+fit <- randomForest( Style~., data=train_data, importance=TRUE, ntree=1000)
+importance(fit)
+varImpPlot(fit)
+Prediction <- predict(fit, test)
+table(actual=test_data[,4],Prediction)
 
-net_results <- compute(net, test_data[,c(-1,-2,-3,-4,-5,-19)])
-ANN=as.numeric(net_results$net.result)
-ANN_round<-round(ANN)
 
-wrong<- (test_data$StyleID!=ANN_round)
-rate<-sum(wrong)/length(wrong)
-rate
+wrong<- (test[,4]!=Prediction )
+error_rate<-sum(wrong)/length(wrong)
+error_rate 
 
-#net_bc21  <- neuralnet(formula = form, data=train_data, hidden=c(4,2), threshold=0.01)
-#plot(net_bc21)
 
