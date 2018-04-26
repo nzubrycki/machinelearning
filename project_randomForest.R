@@ -124,3 +124,19 @@ prediction_bin4 <- round(prediction_bin4)
 wrong_bin4 <- (testbin4[,2]!=prediction_bin4)
 errorrate_bin4 <- sum(wrong_bin4)/length(wrong_bin4)
 errorrate_bin4
+
+##################################################################################################
+# all the data
+
+every_other <- seq(1, nrow(data), by=2)
+test_data <- data[every_other,]
+train_data <- data[-every_other,]
+
+fit_data <- randomForest(StyleID~., data = train_data[], importance=TRUE, ntree=1000)
+importance(fit_data)
+varImpPlot(fit_data)
+prediction_data <- predict(fit_data, test_data)
+prediction_data <- round(prediction_data)
+wrong_data <- (test_data[,2]!=prediction_data)
+errorrate_data <- sum(wrong_data)/length(wrong_data)
+errorrate_data
