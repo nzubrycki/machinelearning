@@ -134,7 +134,7 @@ train_data <- data[-every_other,]
 
 fit_data <- randomForest(StyleID~., data = train_data[], importance=TRUE, ntree=1000)
 importance(fit_data)
-varImpPlot(fit_data)
+varImpPlot(fit_data, main = "Full Data Variable Importance")
 prediction_data <- predict(fit_data, test_data)
 prediction_data <- round(prediction_data)
 wrong_data <- (test_data[,2]!=prediction_data)

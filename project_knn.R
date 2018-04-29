@@ -39,7 +39,7 @@ knn5 <- knn(train_data[,c(-1,-2,-3,-4,-5,-19)], test_data[,c(-1,-2,-3,-4,-5,-19)
 wrong <- (test_data[,4] != knn5)
 rate <-sum(wrong)/length(wrong)
 rate
-
+rates <- c()
 # Now we can look at more values for K by editing this for loop
 for(i in seq(1, 100, by=1)){
   predict <- knn(train_data[,c(-1,-2,-3,-4,-5,-19)], test_data[,c(-1,-2,-3,-4,-5,-19)], train_data[,4], k = i)
@@ -51,4 +51,4 @@ for(i in seq(1, 100, by=1)){
   rates[i] <- rate * 100
 }
 max(rates)
-plot(rates)
+plot(rates, xlab = "K Values", ylab = "% Accuracy", main = "KNN")
