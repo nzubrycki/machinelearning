@@ -27,6 +27,7 @@ data$Name <- NULL
 data$URL <- NULL
 data$Style <- NULL
 data$UserId <- NULL
+data$BeerID <-NULL
 
 # install and load packages
 #install.packages('randomForest')
